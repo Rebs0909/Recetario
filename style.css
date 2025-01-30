@@ -1,0 +1,41 @@
+h1 {
+  border: 3px solid black;
+  text-align: center;
+  background-color: #6495ed;
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 25px;
+}
+body {
+  background-color: aquamarine;
+  font-family: sans-serif;
+  margin: 0 50px;
+}
+
+.container {
+  display: flex;
+  gap: 50ps;
+  border-radius: 25px;
+}
+#posts {
+  width: 400ps;
+}
+i {
+  cursor: pointer;
+}
+label {
+  padding: 65px;
+}
+#posts div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.options {
+  display: flex;
+  gap: 25px;
+}
+#msg {
+  color: red;
+}
