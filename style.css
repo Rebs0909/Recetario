@@ -1,5 +1,7 @@
 h1 {
-  border: 3px solid black;
+  font-family: "Times New Roman", Times, serif;
+  color: #7fffd4;
+  border: 5px solid #44848b;
   text-align: center;
   background-color: #6495ed;
   margin-top: 30px;
@@ -8,7 +10,7 @@ h1 {
   border-radius: 25px;
 }
 body {
-  background-color: aquamarine;
+  background-color: #76eecb;
   font-family: sans-serif;
   margin: 0 50px;
 }
@@ -37,4 +39,7 @@ label {
 }
 #msg {
   color: red;
+}
+h3 {
+  margin-top: 0px;
 }

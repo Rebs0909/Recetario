@@ -7,9 +7,11 @@ let posts = document.getElementById("posts");
 form.addEventListener("submit", (e) => {
   //prevents the default form submission, which would reload the page
   e.preventDefault();
+  console.log(e);
+
   console.log("button clicked");
 
-  //this block is a function that checks if the imput field(input.value) is empty to-
+  //this block is a function that checks if the input field(input.value) is empty to-
   //determine if it should print failure or success
   formValidation();
 });
@@ -23,11 +25,12 @@ let formValidation = () => {
     acceptData();
   }
 };
-//this block accepts the data ** it-s incomplete!!**
+//this block accepts the data
 let data = {};
 
 let acceptData = () => {
-  data["text"] = input.value;
+  data["title"] = input.value;
+  data["text"] = input2.value;
   console.log(data);
   createPost();
 };
@@ -35,6 +38,7 @@ let acceptData = () => {
 let createPost = () => {
   posts.innerHTML += `
   <div>
+    <p>${data.title}</p>
     <p>${data.text}</p>
     <span class="options">
       <i onClick="editPost(this)" class="fas fa-edit"></i>
