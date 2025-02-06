@@ -20,18 +20,28 @@
       <form id="form">
         <label for="post"> Write recipe here</label>
         <br /><br />
-        <textarea name="title" id="input" cols="40" rows="3"></textarea>
+        <textarea name="title" id="title" cols="40" rows="3"></textarea>
         <br /><br />
-        <textarea name="ingredients" id="input2" cols="40" rows="10"></textarea>
+        <textarea
+          name="ingredients"
+          id="ingredients"
+          cols="40"
+          rows="10"
+        ></textarea>
         <br /><br />
-        <textarea name="instruct" id="input3" cols="40" rows="10"></textarea>
+        <textarea
+          name="instruct"
+          id="instructions"
+          cols="40"
+          rows="10"
+        ></textarea>
         <br /><br />
         <div id="msg"></div>
         <button type="submit">Post</button>
       </form>
       <div class="right">
         <h3>Your posts here</h3>
-        <div id="posts">
+        <div id="recipeList">
           <!-- <div>
             <p>Hello world post 1</p>
             <span class="options">
