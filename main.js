@@ -16,7 +16,7 @@ form.addEventListener("submit", (e) => {
   formValidation();
 });
 let formValidation = () => {
-  if (input.value === "") {
+  if (input.value === "" || input2.value === "" || input3.value === "") {
     msg.innerHTML = "Post cannot be blank";
     console.log("failure");
   } else {
@@ -30,7 +30,8 @@ let data = {};
 
 let acceptData = () => {
   data["title"] = input.value;
-  data["text"] = input2.value;
+  data["ingredients"] = input2.value;
+  data["instruct"] = input3.value;
   console.log(data);
   createPost();
 };
@@ -39,7 +40,8 @@ let createPost = () => {
   posts.innerHTML += `
   <div>
     <p>${data.title}</p>
-    <p>${data.text}</p>
+    <p>${data.ingredients}</p>
+    <p>${data.instruct}</p>
     <span class="options">
       <i onClick="editPost(this)" class="fas fa-edit"></i>
       <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
@@ -47,6 +49,8 @@ let createPost = () => {
   </div>
   `;
   input.value = "";
+  input2.value = "";
+  input3.value = "";
 };
 
 let deletePost = (e) => {

@@ -28,11 +28,11 @@ i {
 label {
   padding: 65px;
 }
-#posts div {
+/* #posts div {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+} */
 .options {
   display: flex;
   gap: 25px;
