@@ -34,46 +34,60 @@ let formValidation = () => {
 //this block accepts the data
 let data = {};
 
+// let acceptData = () => {
+//   data["title"] = title.value;
+//   data["ingredients"] = ingredients.value;
+//   data["instructions"] = instructions.value;
+//   console.log(data);
+//   saveRecipe(data.title, data.ingredients, data.instructions);
+//   createPost();
+// };
+
 let acceptData = () => {
-  data["title"] = title.value;
-  data["ingredients"] = ingredients.value;
-  data["instruct"] = instructions.value;
-  console.log(data);
-  saveRecipe(data.title, data.ingredients, data.instructions);
-  createPost();
+  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+
+  let newRecipe = {
+    title: title.value,
+    ingredients: ingredients.value,
+    instructions: instructions.value,
+  };
+  if (currentEditIndex === -1) {
+    recipes.push(newRecipe);
+  } else {
+    recipes[currentEditIndex] = newRecipe;
+    currentEditIndex = -1;
+  }
+
+  localStorage.setItem("recipes", JSON.stringify(recipes));
+  loadRecipes();
+
+  title.value = "";
+  ingredients.value = "";
+  instructions.value = "";
 };
 
 let createPost = () => {
   loadRecipes();
-  recipeList.innerHTML += `
-  <div>
-    <p>${data.title}</p>
-    <p>${data.ingredients}</p>
-    <p>${data.instructions}</p>
-    <span class="options">
-      <i onClick="editPost(this)" class="fas fa-edit"></i>
-      <i onClick="deletePost(this)" class="fas fa-trash-alt"></i>
-    </span>
-  </div>
-  `;
   title.value = "";
   ingredients.value = "";
   instructions.value = "";
 };
 
 let deletePost = (e) => {
-  e.parentElement.parentElement.remove();
+  e.closest("div").remove();
 };
 `<i onClick="deletePost(this)" class="fas fa-trash-alt"></i>`;
+
+let currentEditIndex = -1;
 
 let editPost = (e) => {
   let recipeDiv = e.parentElement.parentElement;
   let recipeTitle = recipeDiv.querySelector("h3").innerText;
   let recipeIngredients = recipeDiv
-    .querySelector("p:nth-of=type(1)")
+    .querySelector("p:nth-of-type(1)")
     .innerText("Ingredients: ", "");
   let recipeInstructions = recipeDiv
-    .querySelector("p:nth-of=type(2)")
+    .querySelector("p:nth-of-type(2)")
     .innerText("Ingredients: ", "");
 
   title.value = recipeTitle;
@@ -81,7 +95,7 @@ let editPost = (e) => {
   instructions.value = recipeInstructions;
 
   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  let index = recipes.findIndex((r) => r.title === recipeTitle);
+  currentEditIndex = recipes.findIndex((r) => r.title === recipeTitle);
   if (index !== -1) {
     recipes.splice(index, 1);
     localStorage.setItem("recipes", JSON.stringify(recipes));
@@ -111,12 +125,15 @@ function loadRecipes() {
   // this forEach function loops through the recipes array and displays a <div> for each recipe
   recipes.forEach((recipe, index) => {
     let recipeElement = document.createElement("div");
+
     recipeElement.innerHTML = `<div>
     <h3>${recipe.title}</h3>
     <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
     <p><strong>Instructions:</strong> ${recipe.instructions}</p>
+    <button onclick="editPost(this)">Edit</button>
     <button onclick="deleteRecipe(${index})">Delete</button>
   </div>`;
+    container.appendChild(recipeElement);
   });
 }
 // this function deletes the recipes
