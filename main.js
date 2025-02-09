@@ -14,17 +14,31 @@ form.addEventListener("submit", (e) => {
   console.log("button clicked");
 
   //this block is a function that checks if the input field(input.value) is empty to-
-  //determine if it should print failure or success
+  //determine if it should print failure or success in submitting the recipe
   formValidation();
 });
 let formValidation = () => {
+  // first the function loads the recipes array and assigns it as the value of the recipes variable
+  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  //this conditional if checks if the values for the input fields are filled out
   if (
     title.value === "" ||
     ingredients.value === "" ||
     instructions.value === ""
   ) {
+    // if there is an empty field a message is displayed and the recipe is not stored
     msg.innerHTML = "Post cannot be blank";
     console.log("failure");
+  }
+  //if the fields are filled, the current
+  else if (
+    currentEditIndex === -1 &&
+    recipes.some(
+      (recipe) => recipe.title.toLowerCase() === title.value.toLowerCase()
+    )
+  ) {
+    msg.innerHTML = "Recipe already exists!";
+    console.log("Duplicate recipe");
   } else {
     console.log("success");
     msg.innerHTML = "";
@@ -34,40 +48,42 @@ let formValidation = () => {
 //this block accepts the data
 let data = {};
 
-// let acceptData = () => {
-//   data["title"] = title.value;
-//   data["ingredients"] = ingredients.value;
-//   data["instructions"] = instructions.value;
-//   console.log(data);
-//   saveRecipe(data.title, data.ingredients, data.instructions);
-//   createPost();
-// };
+// This block of code takes the data and stores it in the recipes array
+// in the localStorage, or it creates a new array called recipes
 
 let acceptData = () => {
   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-
+  // Object newRecipe stores 3 properties: title, ingredients and instructions
   let newRecipe = {
     title: title.value,
     ingredients: ingredients.value,
     instructions: instructions.value,
   };
+  // This if conditional determines whether to add a new recipe or update
+  // on in the recipes array. If the currentEditIndex is -1, it means
+  // that no existing recipe is being edited.
+  // In this case, newRecipe is added to the recipes array with .push()
+  // if currentEditIndex is not -1, it means an existing recipe is being
+  // edited, then the recipes array is updated at currentEditIndex
+  // with newRecipe, then currentEditIndex is reset to -1
   if (currentEditIndex === -1) {
     recipes.push(newRecipe);
   } else {
     recipes[currentEditIndex] = newRecipe;
+    localStorage.setItem("recipes", JSON.stringify(recipes));
+    loadRecipes();
     currentEditIndex = -1;
   }
+  // This saves the recipes to local storage, reloading the recipe list
+  // and clearing the input fields.
+  // first it stores a value in the browser's local storage
+  // "recipes" is the key under which the data is stored.
 
   localStorage.setItem("recipes", JSON.stringify(recipes));
+  // This loads and displays the recipes by calling the loadRecipes function
   loadRecipes();
 
-  title.value = "";
-  ingredients.value = "";
-  instructions.value = "";
-};
-
-let createPost = () => {
-  loadRecipes();
+  // This clears the values from the input fields.
   title.value = "";
   ingredients.value = "";
   instructions.value = "";
@@ -85,10 +101,10 @@ let editPost = (e) => {
   let recipeTitle = recipeDiv.querySelector("h3").innerText;
   let recipeIngredients = recipeDiv
     .querySelector("p:nth-of-type(1)")
-    .innerText("Ingredients: ", "");
+    .innerText.replace("Ingredients: ", "");
   let recipeInstructions = recipeDiv
     .querySelector("p:nth-of-type(2)")
-    .innerText("Ingredients: ", "");
+    .innerText.replace("Instructions: ", "");
 
   title.value = recipeTitle;
   ingredients.value = recipeIngredients;
@@ -96,7 +112,7 @@ let editPost = (e) => {
 
   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
   currentEditIndex = recipes.findIndex((r) => r.title === recipeTitle);
-  if (index !== -1) {
+  if (currentEditIndex !== -1) {
     recipes.splice(index, 1);
     localStorage.setItem("recipes", JSON.stringify(recipes));
   }
@@ -127,11 +143,14 @@ function loadRecipes() {
     let recipeElement = document.createElement("div");
 
     recipeElement.innerHTML = `<div>
+    <br></br>
     <h3>${recipe.title}</h3>
     <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
     <p><strong>Instructions:</strong> ${recipe.instructions}</p>
     <button onclick="editPost(this)">Edit</button>
     <button onclick="deleteRecipe(${index})">Delete</button>
+    <br></br>
+    
   </div>`;
     container.appendChild(recipeElement);
   });
