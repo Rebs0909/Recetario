@@ -9,18 +9,20 @@
   />
   <body>
     <h1>Rebeca's recipe book</h1>
-    <p>
+    <h5>
       This is my recipe book, a collection of the different foods I have learned
       to make, so far this is a personal project with the intent of practicing
       my code writing skills
-    </p>
+    </h5>
     <br /><br />
     <div class="container">
       <div class="left"></div>
       <form id="form">
-        <label for="post"> <strong>Write new recipe here</strong></label>
+        <label for="title"> <strong>New recipe title</strong></label>
         <br /><br />
         <textarea name="title" id="title" cols="25" rows="2"></textarea>
+        <br /><br />
+        <label for="ingredients"> <strong>Ingredients</strong></label>
         <br /><br />
         <textarea
           name="ingredients"
@@ -28,6 +30,8 @@
           cols="25"
           rows="5"
         ></textarea>
+        <br /><br />
+        <label for="instructions"> <strong>Instructions</strong></label>
         <br /><br />
         <textarea
           name="instruct"
@@ -40,7 +44,7 @@
         <button type="submit">Post</button>
       </form>
       <div class="right">
-        <h3>Saved recipes</h3>
+        <h4>Saved recipes</h4>
         <div id="recipeList">
           <!-- <div>
             <p>Hello world post 1</p>
