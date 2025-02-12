@@ -16,16 +16,18 @@ body {
   margin: 0 50px;
 }
 form {
-  padding-left: 40px;
+  padding-left: 20px;
   background-color: #44848b;
-  padding-top: 25px;
+  padding-top: 30px;
   padding-right: 20px;
   border-top-right-radius: 25px;
   padding-bottom: 20px;
+  max-height: 425px;
+  border-bottom-right-radius: 25px;
 }
 .container {
   display: flex;
-  gap: 50px;
+  gap: 10px;
 }
 #posts {
   width: 400px;

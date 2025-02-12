@@ -30,7 +30,7 @@ let formValidation = () => {
     msg.innerHTML = "Post cannot be blank";
     console.log("failure");
   }
-  //if the fields are filled, the current
+  //This checks if the recipe name has already been used to avoid duplicates.
   else if (
     currentEditIndex === -1 &&
     recipes.some(
@@ -56,9 +56,10 @@ let acceptData = () => {
   // Object newRecipe stores 3 properties: title, ingredients and instructions
   let newRecipe = {
     title: title.value,
-    ingredients: ingredients.value,
+    ingredients: ingredients.value.split(", "),
     instructions: instructions.value,
   };
+
   // This if conditional determines whether to add a new recipe or update
   // on in the recipes array. If the currentEditIndex is -1, it means
   // that no existing recipe is being edited.
