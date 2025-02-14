@@ -4,6 +4,7 @@ let ingredients = document.getElementById("ingredients");
 let instructions = document.getElementById("instructions");
 let msg = document.getElementById("msg");
 let recipeList = document.getElementById("recipeList");
+let inventory = document.getElementById("inventory");
 
 //this listens for a submit event on the form element.
 form.addEventListener("submit", (e) => {
