@@ -3,6 +3,7 @@ let title = document.getElementById("title");
 let ingredients = document.getElementById("ingredients");
 let instructions = document.getElementById("instructions");
 let msg = document.getElementById("msg");
+let msg2 = document.getElementById("msg2");
 let recipeList = document.getElementById("recipeList");
 let inventory = document.getElementById("inventory");
 
@@ -169,3 +170,29 @@ function deleteRecipe(index) {
 }
 //this displays the recipes when the page is loaded
 window.onload = loadRecipes;
+
+//-------------This is the inventory block----------------
+//
+//
+//
+inventory.addEventListener("submit", (e) => {
+  e.preventDefault();
+  inventoryValidation();
+});
+
+let inventoryValidation = () => {
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  if (title.value === "") {
+    msg2.innerHTML = "Field can't be blank";
+  } else {
+    msg2.innerHTML = "";
+    acceptInventoryData();
+  }
+};
+
+let acceptInventoryData = () => {
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  let newIngredient = {
+    ingredientItem: inventory.value,
+  };
+};
