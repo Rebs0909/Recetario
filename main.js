@@ -5,8 +5,10 @@ let instructions = document.getElementById("instructions");
 let msg = document.getElementById("msg");
 let msg2 = document.getElementById("msg2");
 let recipeList = document.getElementById("recipeList");
-let inventory = document.getElementById("inventory");
+let inventoryItem = document.getElementById("inventoryItem");
+let ingredientListDisplay = document.getElementById("ingredientListDisplay");
 
+let currentEditInventoryIndex = -1;
 //this listens for a submit event on the form element.
 form.addEventListener("submit", (e) => {
   //prevents the default form submission, which would reload the page
@@ -169,20 +171,23 @@ function deleteRecipe(index) {
   loadRecipes();
 }
 //this displays the recipes when the page is loaded
-window.onload = loadRecipes;
+window.onload = () => {
+  loadRecipes();
+  loadIngredients();
+};
 
 //-------------This is the inventory block----------------
 //
 //
 //
-inventory.addEventListener("submit", (e) => {
+document.getElementById("inventoryForm").addEventListener("submit", (e) => {
   e.preventDefault();
   inventoryValidation();
 });
 
 let inventoryValidation = () => {
   let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
-  if (title.value === "") {
+  if (inventoryItem.value === "") {
     msg2.innerHTML = "Field can't be blank";
   } else {
     msg2.innerHTML = "";
@@ -193,6 +198,69 @@ let inventoryValidation = () => {
 let acceptInventoryData = () => {
   let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
   let newIngredient = {
-    ingredientItem: inventory.value,
+    ingredientItem: inventoryItem.value,
   };
+
+  if (currentEditInventoryIndex === -1) {
+    ingredientList.push(newIngredient);
+  } else {
+    ingredientList[currentEditInventoryIndex] = newIngredient;
+    localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+    loadIngredients();
+    currentEditInventoryIndex = -1;
+  }
+  localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+  // This loads and displays the recipes by calling the loadRecipes function
+  loadIngredients();
+
+  // This clears the values from the input fields.
+  inventoryItem.value = "";
 };
+
+let editInventoryItem = (e) => {
+  let ingredientInventoryItem = e.parentElement.querySelector("h5").innerText;
+
+  inventoryItem.value = ingredientInventoryItem;
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+
+  currentEditInventoryIndex = ingredientList.findIndex(
+    (r) => r.ingredientItem === ingredientInventoryItem
+  );
+
+  if (currentEditInventoryIndex !== -1) {
+    ingredientList.splice(currentEditInventoryIndex, 1);
+    localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+  }
+  loadIngredients();
+};
+function saveIngredient(inventoryItem) {
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  ingredientList.push({ ingredientItem: inventoryItem }); // Use 'ingredientItem'
+  localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+}
+function loadIngredients() {
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  let bottomBox = document.getElementById("ingredientListDisplay");
+  bottomBox.innerHTML = "";
+
+  ingredientList.forEach((inventoryItem, index) => {
+    let ingredientElement = document.createElement("div");
+    ingredientElement.innerHTML = `<div>
+    <h5>${inventoryItem.ingredientItem}</h5>
+    <button onclick="editInventoryItem(this)">Edit</button>
+    <button onclick="deleteInventoryItem(${index})">Delete</button>
+    <br></br>
+    </div>`;
+    bottomBox.appendChild(ingredientElement);
+  });
+}
+function deleteInventoryItem(index) {
+  // the recipes array is assigned to the recipes variable
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  // this splice function removes an element from the recipes array
+  ingredientList.splice(index, 1);
+  //this updates the local storage and saves it as a string
+  localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+  loadIngredients();
+}
+//this displays the recipes when the page is loaded

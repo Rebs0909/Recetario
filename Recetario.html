@@ -2,18 +2,18 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
   </head>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-  />
   <body>
     <h1>Rebeca's recipe book</h1>
-    <h5>
+    <p>
       This is my recipe book, a collection of the different foods I have learned
       to make, so far this is a personal project with the intent of practicing
       my code writing skills
-    </h5>
+    </p>
     <br /><br />
     <div class="container">
       <div class="left"></div>
@@ -25,7 +25,7 @@
         <label for="ingredients"> <strong>Ingredients</strong></label>
         <br /><br />
         <textarea
-          placeholder="Comma separated values only"
+          placeholder="Comma and space separated values only"
           name="ingredients"
           id="ingredients"
           cols="25"
@@ -35,7 +35,7 @@
         <label for="instructions"> <strong>Instructions</strong></label>
         <br /><br />
         <textarea
-          name="instruct"
+          name="instructions"
           id="instructions"
           cols="25"
           rows="7"
@@ -67,16 +67,24 @@
     </div>
     <br /><br />
     <div class="bottomBox">
-      <form id="inventory">
-        <label for="inventory"
+      <form id="inventoryForm">
+        <label for="inventoryItem"
           ><strong>Add ingredient to inventory</strong></label
         >
         <br /><br />
-        <textarea name="inventory" id="inventory" cols="30" rows="2"></textarea>
+        <textarea
+          name="inventoryItem"
+          id="inventoryItem"
+          cols="30"
+          rows="2"
+        ></textarea>
+        <br /><br />
         <div id="msg2"></div>
         <button type="submit">Post</button>
       </form>
       <br /><br />
+      <h5>Saved Ingredients</h5>
+      <div id="ingredientListDisplay"></div>
     </div>
     <script src="main.js"></script>
   </body>
