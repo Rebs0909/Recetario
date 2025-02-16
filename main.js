@@ -263,4 +263,23 @@ function deleteInventoryItem(index) {
   localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
   loadIngredients();
 }
-//this displays the recipes when the page is loaded
+
+//this function compares the ingredients and the inventory, then changes font color to reflect missing ingredients
+
+function compareIngredients() {
+  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
+  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  let ingredientInRecipe = [];
+  for (let i = 0; i < recipes.length; i++) {
+    ingredientInRecipe[i] = recipes[i].ingredients;
+    for (let e = 0; e < ingredientInRecipe[e]; e++) {
+      if (ingredientInRecipe[e] === ingredientList[e])
+        console.log(ingredientInRecipe[e]);
+    }
+  }
+  console.log(ingredientInRecipe);
+  // console.log(ingredientInRecipe);
+  console.log(ingredientList);
+}
+
+compareIngredients();
