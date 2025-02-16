@@ -69,6 +69,10 @@ h3 {
   margin-left: 25px;
   width: 80%;
   border: 5px solid #44848b;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  height: 100%;
+  width: 100%;
 }
 /* title [type="text"] {
   border: 100px #44848b;
@@ -82,9 +86,29 @@ h4 {
 }
 h5 {
   margin-top: 0px;
-  background-color: #63bfa3;
-
+  background-color: #6495ed;
+  border: 2px solid #44848b;
   border-radius: 15px;
   padding: 10px;
   color: 6495ed;
+}
+.bottomBox {
+  display: flex;
+  gap: 10px;
+}
+.rightBottom {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+
+  padding: 10px;
+  box-sizing: border-box;
+}
+recipeList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  height: 100%;
+  width: 100%;
 }
