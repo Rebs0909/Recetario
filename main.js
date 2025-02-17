@@ -268,18 +268,31 @@ function deleteInventoryItem(index) {
 
 function compareIngredients() {
   let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
-  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  let ingredientInRecipe = [];
-  for (let i = 0; i < recipes.length; i++) {
-    ingredientInRecipe[i] = recipes[i].ingredients;
-    for (let e = 0; e < ingredientInRecipe[e]; e++) {
-      if (ingredientInRecipe[e] === ingredientList[e])
-        console.log(ingredientInRecipe[e]);
-    }
-  }
-  console.log(ingredientInRecipe);
-  // console.log(ingredientInRecipe);
   console.log(ingredientList);
+  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  console.log(recipes);
+  let ingredientInRecipe = [];
+
+  // recipes.forEach(checkIfSame);
+  // function checkIfSame(recipes, ingredientList) {
+  //   if (recipes.ingredients[index] === ingredientList.ingredientItem[index]) {
+  //     console.log(recipes.ingredients[index]);
+  //   }
+  // }
+
+  // console.log(ingredientInRecipe);
+  // let ingredientItem = [];
+  // let checkIfSame = ingredientInRecipe.filter((element) =>
+  //   ingredientList.includes(element)
+  // );
+  // console.log(checkIfSame);
+  // for (let i = 0; i < recipes.length; i++) {
+  //   ingredientInRecipe[i] = recipes[i].ingredients;
+  //   console.log(ingredientInRecipe);
+  //   ingredientItem[i] = ingredientList[i].ingredientItem;
+  //   console.log(ingredientInRecipe[i]);
+  //   console.log(ingredientItem[i]);
+  // }
 }
 
 compareIngredients();
