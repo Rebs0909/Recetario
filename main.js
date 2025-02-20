@@ -266,7 +266,7 @@ let acceptInventoryData = () => {
   localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
   // This loads and displays the recipes by calling the loadRecipes function
   loadIngredients();
-
+  loadRecipes();
   // This clears the values from the input fields.
   inventoryItem.value = "";
 };
