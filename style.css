@@ -112,3 +112,9 @@ recipeList {
   height: 100%;
   width: 100%;
 }
+.ingredientInStock {
+  color: antiquewhite;
+}
+.missingIngredient {
+  color: red;
+}

@@ -7,8 +7,9 @@ let msg2 = document.getElementById("msg2");
 let recipeList = document.getElementById("recipeList");
 let inventoryItem = document.getElementById("inventoryItem");
 let ingredientListDisplay = document.getElementById("ingredientListDisplay");
-
+let ingredientMatch = [];
 let currentEditInventoryIndex = -1;
+let currentEditIndex = -1;
 //this listens for a submit event on the form element.
 form.addEventListener("submit", (e) => {
   //prevents the default form submission, which would reload the page
@@ -99,16 +100,32 @@ let deletePost = (e) => {
 };
 `<i onClick="deletePost(this)" class="fas fa-trash-alt"></i>`;
 
-let currentEditIndex = -1;
-
 let editPost = (e) => {
+  //This assigns the recipeDiv local variable the value of the
+  //  parent of the parent of the edit button, which is the whole recipe div
   let recipeDiv = e.parentElement.parentElement;
+  // This assigns the variable recipeTitle the value of the h3 tag in the HTML code
   let recipeTitle = recipeDiv.querySelector("h3").innerText;
-  let recipeIngredients = recipeDiv
-    .querySelector("p:nth-of-type(1)")
-    .innerText.replace("Ingredients: ", "");
+
+  // let ingredientInStock = recipeDiv.querySelector(".ingredientInStock");
+  // let missingIngredient = recipeDiv.querySelector(".missingIngredient");
+  // let recipeIngredients = (ingredientInStock) =>
+  //   missingIngredient
+  //     .join()
+  let ingredientsInStock = [...recipeDiv.querySelectorAll(".ingredientInStock")]
+    .map((el) => el.innerText)
+    .join(", ");
+
+  let missingIngredients = [...recipeDiv.querySelectorAll(".missingIngredient")]
+    .map((el) => el.innerText)
+    .join(", ");
+
+  let recipeIngredients = ingredientsInStock + "" + missingIngredients;
+
+  // recipeIngredients = recipeIngredients.innerText.replace("Ingredients: ", "");
+
   let recipeInstructions = recipeDiv
-    .querySelector("p:nth-of-type(2)")
+    .querySelector(".instructions")
     .innerText.replace("Instructions: ", "");
 
   title.value = recipeTitle;
@@ -117,10 +134,10 @@ let editPost = (e) => {
 
   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
   currentEditIndex = recipes.findIndex((r) => r.title === recipeTitle);
-  if (currentEditIndex !== -1) {
-    recipes.splice(index, 1);
-    localStorage.setItem("recipes", JSON.stringify(recipes));
-  }
+  // if (currentEditIndex !== -1) {
+  //   recipes.splice(currentEditIndex, 1);
+  //   localStorage.setItem("recipes", JSON.stringify(recipes));
+  // }
   loadRecipes();
 };
 
@@ -143,23 +160,60 @@ function loadRecipes() {
   let container = document.getElementById("recipeList");
   //this clears any previously displayed recipes
   container.innerHTML = "";
+  // compareIngredients();
+
+  let ingredientList =
+    JSON.parse(localStorage.getItem("ingredientList")).map((ingredient) => {
+      return ingredient.ingredientItem;
+    }) || [];
+  let ingredientInStock = [];
+  let missingIngredient = [];
+  // for (let i = 0; i < recipes.length; i++) {
+  //   for (let e = 0; e < recipes[i].ingredients.length; e++) {
+  //     if (ingredientList.includes(recipes[i].ingredients[e])) {
+  //       console.log(recipes[i].ingredients[e]);
+  //       ingredientInStock.push(recipes[i].ingredients[e]);
+  //     } else {
+  //       missingIngredient.push(recipes[i].ingredients[e]);
+  //     }
+  //   }
+
   // this forEach function loops through the recipes array and displays a <div> for each recipe
   recipes.forEach((recipe, index) => {
     let recipeElement = document.createElement("div");
 
+    for (let i = 0; i < recipe.ingredients.length; i++) {
+      if (ingredientList.includes(recipe.ingredients[i])) {
+        console.log(recipe.ingredients[i]);
+        ingredientInStock.push(recipe.ingredients[i]);
+      } else {
+        missingIngredient.push(recipe.ingredients[i]);
+      }
+    }
+
+    // if (recipes.ingredients.forEach.includes(ingredientMatch))
     recipeElement.innerHTML = `<div>
     
     <h3>${recipe.title}</h3>
-    <p><strong>Ingredients:</strong> ${recipe.ingredients}</p>
-    <p><strong>Instructions:</strong> ${recipe.instructions}</p>
+    <div class="ingredientInStock" id="ingredientInStock"> 
+      <strong>Ingredients:</strong>
+      <p>${ingredientInStock} </p></div>
+    <div class="missingIngredient" id="missingIngredient">
+      
+      <p>${missingIngredient} </p></div>
+    <div class="instructions" id="instructions">
+      <p><strong>Instructions:</strong> ${recipe.instructions}</p></div>
     <button onclick="editPost(this)">Edit</button>
     <button onclick="deleteRecipe(${index})">Delete</button>
     <br></br>
     
   </div>`;
     container.appendChild(recipeElement);
+    ingredientInStock = [];
+    missingIngredient = [];
   });
 }
+
 // this function deletes the recipes
 function deleteRecipe(index) {
   // the recipes array is assigned to the recipes variable
@@ -227,10 +281,10 @@ let editInventoryItem = (e) => {
     (r) => r.ingredientItem === ingredientInventoryItem
   );
 
-  if (currentEditInventoryIndex !== -1) {
-    ingredientList.splice(currentEditInventoryIndex, 1);
-    localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
-  }
+  // if (currentEditInventoryIndex !== -1) {
+  //   ingredientList.splice(currentEditInventoryIndex, 1);
+  //   localStorage.setItem("ingredientList", JSON.stringify(ingredientList));
+  // }
   loadIngredients();
 };
 function saveIngredient(inventoryItem) {
@@ -266,33 +320,41 @@ function deleteInventoryItem(index) {
 
 //this function compares the ingredients and the inventory, then changes font color to reflect missing ingredients
 
-function compareIngredients() {
-  let ingredientList = JSON.parse(localStorage.getItem("ingredientList")) || [];
-  console.log(ingredientList);
-  let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  console.log(recipes);
-  let ingredientInRecipe = [];
+// function compareIngredients() {
+//   let ingredientList =
+//     JSON.parse(localStorage.getItem("ingredientList")).map((ingredient) => {
+//       return ingredient.ingredientItem;
+//     }) || [];
+//   console.log(ingredientList);
+//   let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+//   console.log(recipes);
+//   let ingredientInRecipe = [];
+//   for (let i = 0; i < recipes.length; i++) {
+//     for (let e = 0; e < recipes[i].ingredients.length; e++) {
+//       if (ingredientList.includes(recipes[i].ingredients[e])) {
+//         console.log(recipes[i].ingredients[e]);
+//         ingredientMatch.push(recipes[i].ingredients[e]);
+//       }
+//     }
+//   }
+//   console.log(ingredientMatch);
+// recipes.forEach(checkIfSame);
+// function checkIfSame(recipes, ingredientList) {
+//   if (recipes.ingredients[index] === ingredientList.ingredientItem[index]) {
+//     console.log(recipes.ingredients[index]);
+//   }
+// }
 
-  // recipes.forEach(checkIfSame);
-  // function checkIfSame(recipes, ingredientList) {
-  //   if (recipes.ingredients[index] === ingredientList.ingredientItem[index]) {
-  //     console.log(recipes.ingredients[index]);
-  //   }
-  // }
-
-  // console.log(ingredientInRecipe);
-  // let ingredientItem = [];
-  // let checkIfSame = ingredientInRecipe.filter((element) =>
-  //   ingredientList.includes(element)
-  // );
-  // console.log(checkIfSame);
-  // for (let i = 0; i < recipes.length; i++) {
-  //   ingredientInRecipe[i] = recipes[i].ingredients;
-  //   console.log(ingredientInRecipe);
-  //   ingredientItem[i] = ingredientList[i].ingredientItem;
-  //   console.log(ingredientInRecipe[i]);
-  //   console.log(ingredientItem[i]);
-  // }
-}
-
-compareIngredients();
+// console.log(ingredientInRecipe);
+// let ingredientItem = [];
+// let checkIfSame = ingredientInRecipe.filter((element) =>
+//   ingredientList.includes(element)
+// );
+// console.log(checkIfSame);
+// for (let i = 0; i < recipes.length; i++) {
+//   ingredientInRecipe[i] = recipes[i].ingredients;
+//   console.log(ingredientInRecipe);
+//   ingredientItem[i] = ingredientList[i].ingredientItem;
+//   console.log(ingredientInRecipe[i]);
+//   console.log(ingredientItem[i]);
+// }
