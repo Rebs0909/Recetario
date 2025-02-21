@@ -61,7 +61,7 @@ let acceptData = () => {
   // Object newRecipe stores 3 properties: title, ingredients and instructions
   let newRecipe = {
     title: title.value,
-    ingredients: ingredients.value.split(", "),
+    ingredients: ingredients.value.split(","),
     instructions: instructions.value,
   };
 
@@ -112,7 +112,9 @@ let editPost = (e) => {
   // let recipeIngredients = (ingredientInStock) =>
   //   missingIngredient
   //     .join()
-  let ingredientsInStock = [...recipeDiv.querySelectorAll(".ingredientInStock")]
+  let ingredientsInStock = [
+    ...recipeDiv.querySelectorAll(".ingredientInStock p:first-of-type"),
+  ]
     .map((el) => el.innerText)
     .join(", ");
 
@@ -120,8 +122,8 @@ let editPost = (e) => {
     .map((el) => el.innerText)
     .join(", ");
 
-  let recipeIngredients = ingredientsInStock + "" + missingIngredients;
-
+  let recipeIngredients = ingredientsInStock + "," + missingIngredients;
+  // recipeIngredients.innerText.replace("Ingredients: ", "");
   // recipeIngredients = recipeIngredients.innerText.replace("Ingredients: ", "");
 
   let recipeInstructions = recipeDiv
@@ -164,7 +166,7 @@ function loadRecipes() {
 
   let ingredientList =
     JSON.parse(localStorage.getItem("ingredientList")).map((ingredient) => {
-      return ingredient.ingredientItem;
+      return ingredient.ingredientItem.toLowerCase();
     }) || [];
   let ingredientInStock = [];
   let missingIngredient = [];
@@ -178,16 +180,17 @@ function loadRecipes() {
   //     }
   //   }
 
+  let currentIngredients = [];
   // this forEach function loops through the recipes array and displays a <div> for each recipe
   recipes.forEach((recipe, index) => {
     let recipeElement = document.createElement("div");
-
-    for (let i = 0; i < recipe.ingredients.length; i++) {
-      if (ingredientList.includes(recipe.ingredients[i])) {
-        console.log(recipe.ingredients[i]);
-        ingredientInStock.push(recipe.ingredients[i]);
+    currentIngredients = recipe.ingredients;
+    for (let i = 0; i < currentIngredients.length; i++) {
+      if (ingredientList.includes(currentIngredients[i].toLowerCase())) {
+        console.log(currentIngredients[i]);
+        ingredientInStock.push(currentIngredients[i].toLowerCase());
       } else {
-        missingIngredient.push(recipe.ingredients[i]);
+        missingIngredient.push(currentIngredients[i].toLowerCase());
       }
     }
 
